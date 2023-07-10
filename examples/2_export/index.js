@@ -2,7 +2,7 @@ import {wasmBrowserInstantiate} from "./instantiateWasm.js";
 
 const go = new Go(); // Defined in wasm_exec.js. Don't forget to add this in your index.html.
 
-const runWasmAdd = async () => {
+const runWasm = async () => {
     // Get the importObject from the go instance.
     const importObject = go.importObject;
 
@@ -13,10 +13,11 @@ const runWasmAdd = async () => {
     go.run(wasmModule.instance).then(r => console.log(r));
 
     // Call the Add function export from wasm, save the result
-    const addResult = wasmModule.instance.exports.add(24, 24);
+    const result = wasmModule.instance.exports.add(25, 24);
 
-    // Set the result onto the body
-    document.body.textContent = `Hello World! addResult: ${addResult}`;
+    console.log(result);
+    console.log(wasmModule.instance.exports.ADD_CONSTANT); // Should return undefined
+    console.log(wasmModule.instance.exports.addIntegerWithConstant); // Should return undefined
 };
 
-runWasmAdd().then(r => console.log(r));
+runWasm().then(r => console.log(r));
