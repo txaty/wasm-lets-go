@@ -160,3 +160,9 @@ go.work
 .vscode/
 .fleet/
 *.sublime-workspace
+
+# MacOS files
+*.DS_Store
+
+# Driver file copied from TinyGo
+wasm_exec.js
