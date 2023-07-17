@@ -1,11 +1,8 @@
-const go = new Go()
+const runButton = document.getElementById('run-button');
+const input = document.getElementById('input');
+const output = document.getElementById('output');
+output.value = '';
 
-const runButton = document.getElementById('run-button')
-const input = document.getElementById('input')
-const output = document.getElementById('output')
-output.value = ''
-
-let wasm
 
 // Given the text and a module, insert the string into its memory.
 function insertText(text, module) {
@@ -37,12 +34,43 @@ function onRun(runner, module) {
 }
 
 window.outputText = (text) => {
-    output.value += text + '\n'
+    output.value += text + '\n';
 }
 
-WebAssembly.instantiateStreaming(fetch('main.wasm'), go.importObject)
-    .then(module => {
-        wasm = module.instance
-        runButton.disabled = false
-        runButton.addEventListener('click', onRun(go, wasm))
-    })
+const go = new Go(); // Defined in wasm_exec.js.
+const WASM_URL = 'main.wasm';
+
+let importObject = go.importObject;
+
+const initWasm = async () => {
+    let response;
+    if (!importObject) {
+        importObject = {
+            env: {
+                abort: () => console.log("Abort!")
+            }
+        };
+    }
+    if (WebAssembly.instantiateStreaming) {
+        response = await WebAssembly.instantiateStreaming(
+            fetch(WASM_URL),
+            importObject
+        );
+    } else {
+        const fetchAndInstantiateTask = async () => {
+            const wasmArrayBuffer = await fetch(WASM_URL).then(response =>
+                response.arrayBuffer()
+            );
+            return WebAssembly.instantiate(wasmArrayBuffer, importObject);
+        };
+        response = await fetchAndInstantiateTask();
+    }
+    return response;
+};
+
+(async () => {
+    const wasmModule = await initWasm();
+    go.run(wasmModule.instance).then(r => console.log(r));
+    runButton.disabled = false
+    runButton.addEventListener('click', onRun(go, wasmModule.instance))
+})();

@@ -154,6 +154,7 @@ go.work
 
 # WebAssembly files
 *.wasm
+*.wat
 
 # IDEs
 .idea/
@@ -164,5 +165,5 @@ go.work
 # MacOS files
 *.DS_Store
 
-# Driver file copied from TinyGo
+# Wrapper file copied from TinyGo and Go
 wasm_exec.js

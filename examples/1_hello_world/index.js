@@ -1,22 +1,39 @@
-import {wasmBrowserInstantiate} from "../utils/instantiateWasm.js";
+const go = new Go(); // Defined in wasm_exec.js.
+const WASM_URL = 'main.wasm';
 
-const go = new Go(); // Defined in wasm_exec.js. Don't forget to add this in your index.html.
+let importObject = go.importObject;
 
-const runWasmAdd = async () => {
-    // Get the importObject from the go instance.
-    const importObject = go.importObject;
-
-    // Instantiate our wasm module
-    const wasmModule = await wasmBrowserInstantiate("./main.wasm", importObject);
-
-    // Allow the wasm_exec go instance, bootstrap and execute our wasm module
-    go.run(wasmModule.instance).then(r => console.log(r));
-
-    // Call the Add function export from wasm, save the result
-    const addResult = wasmModule.instance.exports.add(24, 24);
-
-    // Set the result onto the body
-    document.body.textContent = `Hello World! addResult: ${addResult}`;
+const initWasm = async () => {
+    let response;
+    if (!importObject) {
+        importObject = {
+            env: {
+                abort: () => console.log("Abort!")
+            }
+        };
+    }
+    if (WebAssembly.instantiateStreaming) {
+        response = await WebAssembly.instantiateStreaming(
+            fetch(WASM_URL),
+            importObject
+        );
+    } else {
+        const fetchAndInstantiateTask = async () => {
+            const wasmArrayBuffer = await fetch(WASM_URL).then(response =>
+                response.arrayBuffer()
+            );
+            return WebAssembly.instantiate(wasmArrayBuffer, importObject);
+        };
+        response = await fetchAndInstantiateTask();
+    }
+    return response;
 };
 
-runWasmAdd().then(r => console.log(r));
+const wasmModule = await initWasm();
+go.run(wasmModule.instance).then(r => console.log(r));
+
+// Call the Add function export from wasm, save the result
+const addResult = wasmModule.instance.exports.add(24, 24);
+
+// Set the result onto the body
+document.body.textContent = `Hello World! addResult: ${addResult}`;
