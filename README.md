@@ -84,3 +84,28 @@ Taking the input string from JavaScript, and computing the SHA256 hash from WASM
 
 ## Useful Links
 
+### WebAssembly
+
+- [WebAssembly](https://webassembly.org/)
+- [WebAssembly Specification](https://webassembly.github.io/spec/core/)
+- [The Art of WebAssembly](https://learning.oreilly.com/library/view/the-art-of/9781098128982/)
+- [WASM GitHub Organization](https://github.com/WebAssembly)
+- [WebAssembly Guide](https://www.webassembly.guide/webassembly-guide/)
+- [WASM by Example](https://wasmbyexample.dev/home.en-us.html)
+- [Are We Wasm Yet ? - Part 1](https://elewis.dev/are-we-wasm-yet-part-1)
+- [Are We Wasm Yet ? - Part 2](https://elewis.dev/are-we-wasm-yet-part-2)
+- [Lin Clark: A Cartoon Intro to WebAssembly | JSConf EU](https://www.youtube.com/watch?v=HktWin_LPf4)
+- [Rust - WebAssembly](https://www.rust-lang.org/what/wasm)
+- [awesome-wasm](https://github.com/mbasso/awesome-wasm)
+- [awesome-wasm-runtime](https://github.com/appcypher/awesome-wasm-runtimes)
+- [Twiggy - a code size profiler for WASM](https://github.com/rustwasm/twiggy)
+- [binaryen - optimizer and compiler/toolchain library for WebAssembly](https://github.com/WebAssembly/binaryen)
+
+### Golang
+
+- [The Go programming language](https://go.dev/)
+- [TinyGo](https://tinygo.org/)
+- [awesome-go](https://github.com/avelino/awesome-go)
+- [effective-go](https://go.dev/doc/effective_go)
+- [uber-go - The Uber Go Style Guide](https://github.com/uber-go/guide)
+- [100 Go Mistakes and How to Avoid Them](https://learning.oreilly.com/library/view/100-go-mistakes/9781617299599/)
